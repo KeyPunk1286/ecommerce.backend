@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "ecommerce",
+    "password": "ecommerce",
+    "database": "ecommerce",
+    "host": "127.0.0.1",
+    "port": 5555,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "ecommerce",
+    "password": "ecommerce",
+    "database": "ecommerce",
+    "host": "127.0.0.1",
+    "port": 5555,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "ecommerce",
+    "password": "ecommerce",
+    "database": "ecommerce",
+    "host": "127.0.0.1",
+    "port": 5555,
+    "dialect": "postgres"
+  }
+}
