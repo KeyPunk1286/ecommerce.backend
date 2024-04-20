@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Product = require('./product.model'); // Переконайтеся, що шлях правильний
+const Product = require('./product.model');
 
 const User = sequelize.define('User', {
     name: {

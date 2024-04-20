@@ -1,20 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
+const Product = require('../models/product.model');
 
-// Маршрути для користувачів
-router.get('/', (req, res) => {
-  res.send('Список користувачів');
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: [{
+        model: Product,
+        as: 'products'
+      }]
+    });
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send('Користувач не знайдений');
+    }
+  } catch (error) {
+    console.error('Помилка при запиті:', error);
+    res.status(500).send('Внутрішня помилка сервера');
+  }
 });
 
-// router.post('/users', (req, res) => {
-//   const { username, email } = req.body;
-//   // Логіка обробки створення користувача
-//   res.send('Користувач створений');
-// });
-
 router.post('/', async (req, res) => {
-  console.log('REQ BODY', req.body);
   try {
     const newUser = await User.create(req.body);
     res.json(newUser);

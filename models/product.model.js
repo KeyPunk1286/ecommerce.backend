@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Припускаємо, що у вас є налаштований файл підключення до БД
+const sequelize = require('../config/database');
 
 const Product = sequelize.define('Product', {
     name: {

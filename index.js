@@ -4,7 +4,11 @@ const bodyParser = require('body-parser');
 const userModule = require('./modules/user.module')
 const productModule = require('./modules/product.module')
 
+const User = require('./models/user.model');
+const Product = require('./models/product.model');
+
 require('dotenv').config()
+require('./models/associations');
 
 const APP_PORT = process.env.APP_PORT || 8888
 
@@ -18,6 +22,28 @@ app.use('/products', productModule)
 
 // Роут для головної сторінки
 app.get('/', (req, res) => {
+   User.findByPk(1, {
+      include: [{
+         model: Product,
+         as: 'products'  // Використання аліасу, визначеного в hasMany
+      }]
+   }).then(user => {
+      if (user) {
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log('SIUIQWUDNIWUDNIU#WDIUDIAWUNDIWAUND');
+         console.log(user);
+         console.log(user.products);
+      } else {
+         console.log('Користувач не знайдений');
+      }
+   }).catch(error => {
+      console.error('Помилка при запиті:', error);
+   });
+
    res.send('Привіт, світ!')
 });
 
