@@ -2,29 +2,24 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Shops', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      customer_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      title: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      token: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      is_active: {
+        type: Sequelize.BOOLEAN, // Змінено з BOOL на BOOLEAN
+        defaultValue: false
       },
       created_at: {
         allowNull: false,
@@ -51,12 +46,12 @@ module.exports = {
 
     // Додавання тригера для автоматичного оновлення updated_at
     await queryInterface.sequelize.query(`
-      CREATE TRIGGER update_updated_at_column BEFORE UPDATE ON "Users"
+      CREATE TRIGGER update_updated_at_column BEFORE UPDATE ON "Shops"
       FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
     `);
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Shops');
 
     // Видалення функції
     await queryInterface.sequelize.query(`
@@ -65,7 +60,7 @@ module.exports = {
 
     // Видалення тригера
     await queryInterface.sequelize.query(`
-      DROP TRIGGER IF EXISTS update_updated_at_column ON "Users";
+      DROP TRIGGER IF EXISTS update_updated_at_column ON "Shops";
     `);
   }
 };
