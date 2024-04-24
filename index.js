@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 
+const customerModule = require('./modules/customer.module')
 const userModule = require('./modules/user.module')
 const productModule = require('./modules/product.module')
 
@@ -17,6 +18,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use('/customers', customerModule)
 app.use('/users', userModule)
 app.use('/products', productModule)
 
