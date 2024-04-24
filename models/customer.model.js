@@ -1,23 +1,17 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const User = sequelize.define('User', {
-    name: {
+const Customer = sequelize.define('Customer', {
+    user_id: {
+        type: DataTypes.INTEGER,
+    },
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
+    status: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    token: {
-        type: DataTypes.STRING,
-        allowNull: true
+        defaultValue: "Active",
     }
 }, {
     timestamps: true,
@@ -25,4 +19,4 @@ const User = sequelize.define('User', {
     updatedAt: 'updated_at'
 });
 
-module.exports = User;
+module.exports = Customer;

@@ -1,21 +1,17 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Product = sequelize.define('Product', {
-    shop_id: {
+const Shop = sequelize.define('Shop', {
+    customer_id: {
         type: DataTypes.INTEGER,
     },
     title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: true
-    },
-    price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+    is_active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     }
 }, {
     timestamps: true,
@@ -23,4 +19,4 @@ const Product = sequelize.define('Product', {
     updatedAt: 'updated_at'
 });
 
-module.exports = Product;
+module.exports = Shop;
