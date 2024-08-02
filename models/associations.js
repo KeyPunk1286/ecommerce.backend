@@ -32,5 +32,3 @@ Shop.hasMany(Product, {
 //     foreignKey: 'user_id',
 //     as: 'user'
 // });
-
-// тестовий коментар
