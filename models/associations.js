@@ -1,27 +1,40 @@
-const Customer = require("./customer.model");
 const User = require("./user.model");
-const Product = require("./product.model");
+const Customer = require("./customer.model");
 const Shop = require("./shop.model");
+const Product = require("./product.model");
 
-Customer.hasMany(Shop, {
-  foreignKey: "customer_id",
-  as: "shops",
-});
+//=== user --> customer
+User.hasMany(Customer, { foreignKey: "user_id", as: "customers" });
+Customer.belongsTo(User, { foreignKey: "user_id", as: "users" });
+
+//=== customer --> shop
+Customer.hasMany(Shop, { foreignKey: "customer_id", as: "shops" });
+Shop.belongsTo(Customer, { foreignKey: "customer_id", as: "customers" });
+
+//=== shop --> product
+Shop.hasMany(Product, { foreignKey: "shop_id", as: "products" });
+Product.belongsTo(Shop, { foreignKey: "shop_id", as: "shops" });
+
+//=====================================//
+// Customer.hasMany(Shop, {
+//   foreignKey: "customer_id",
+//   as: "shops",
+// });
 
 // Customer.hasMany(Shop, {
 //     foreignKey: 'customer_id',
 //     as: 'shops'
 // });
 
-Customer.hasOne(User, {
-  sourceKey: "user_id",
-  as: "user",
-});
+// Customer.hasOne(User, {
+//   sourceKey: "user_id",
+//   as: "user",
+// });
 
-Shop.hasMany(Product, {
-  foreignKey: "shop_id",
-  as: "products",
-});
+// Shop.hasMany(Product, {
+//   foreignKey: "shop_id",
+//   as: "products",
+// });
 
 // User.hasMany(Product, {
 //     foreignKey: 'user_id',
