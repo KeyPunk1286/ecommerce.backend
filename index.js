@@ -1,5 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+  origin: '*',
+  methods: ['*'],
+  credentials: true
+}));
+
 
 require("dotenv").config();
 
@@ -7,6 +15,7 @@ const sequelize = require("./config/database");
 
 const PORT = process.env.APP_PORT || 7777;
 
+const authModule = require("./modules/auth.module");
 const usersModule = require("./modules/user.module");
 const customersModule = require("./modules/customer.module");
 const shopModule = require("./modules/shop.module");
@@ -17,6 +26,9 @@ const start = async () => {
     await sequelize.authenticate();
     await sequelize.sync();
     app.use(express.json());
+
+    //==== auth
+    app.use("/auth", authModule);
 
     //==== user
     app.use("/users", usersModule);

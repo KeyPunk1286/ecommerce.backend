@@ -1,19 +1,19 @@
 // const jwt = require("jsonwebtoken");
 // const bcrypt = require("bcryptjs");
-const User = require("../models/user.model");
+const Users = require("../models/User.model");
 
-// exports.createUsers = async (req, res) => {
-//   try {
-//     const newUser = await User.create(req.body);
-//     res.status(201).json(newUser);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+exports.createUsers = async (req, res) => {
+  try {
+    const newUser = await Users.create(req.body);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const allUsers = await User.findAll();
+    const allUsers = await Users.findAll();
     res.status(200).json(allUsers);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,9 +30,9 @@ exports.getUsersPaginated = async (req, res) => {
     // Обчислюємо зміщення
     const offset = (page - 1) * limit;
     // Отримуємо загальну кількість продуктів
-    const totalUsers = await User.count();
+    const totalUsers = await Users.count();
     // Отримуємо продукти з урахуванням пагінації
-    const users = await User.findAll({
+    const users = await Users.findAll({
       limit: limit,
       offset: offset,
     });
@@ -55,7 +55,7 @@ exports.getUsersPaginated = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const userById = await User.findByPk(req.params.id);
+    const userById = await Users.findByPk(req.params.id);
     if (!userById) {
       res.status(404).json({ message: "User not found" });
       return;
@@ -68,7 +68,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const userByid = await User.findByPk(req.params.id);
+    const userByid = await Users.findByPk(req.params.id);
     if (!userByid) {
       res.status(404).json({ message: "User not found" });
       return;
@@ -82,7 +82,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const userDeleteById = await User.findByPk(req.params.id);
+    const userDeleteById = await Users.findByPk(req.params.id);
     if (!userDeleteById) {
       res.status(404).json({ message: "User not found" });
       return;
