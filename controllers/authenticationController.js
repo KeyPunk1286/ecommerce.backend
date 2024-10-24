@@ -2,86 +2,183 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 
-
 exports.createUser = async (req, res) => {
+  const { email, firstname, secondname, lastname, password } = req.body;
 
   // Validation
   const responseErrors = {
-    'success': false,
-    'errors': [],
+    success: false,
+    errors: [],
   };
 
-  // Firstname (username) vis required
-  if (req.body.username === undefined || req.body.username === "") {
-    responseErrors.errors = {...responseErrors.errors, username: ["Firstname is required!"]}
+  // Email (login)  =====================
+  if (email === undefined || email === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      email: ["Email is required!"],
+    };
   }
-  // Firstname (username) max length = 20
-  if (req.body.username !== undefined && req.body.username.length >= 20) {
-    responseErrors.errors = {...responseErrors.errors, username: ["Firstname should be less than length 20 chars!"]}
-  }
-
-  // Secondname vis required
-  if (req.body.secondname === undefined || req.body.secondname === "") {
-    responseErrors.errors = {...responseErrors.errors, secondname: ["Secondname is required!"]}
-  }
-  // Secondname max length = 20
-  if (req.body.secondname !== undefined && req.body.secondname.length >= 20) {
-    responseErrors.errors = {...responseErrors.errors, secondname: ["Secondname should be less than length 20 chars!"]}
+  if (email !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      email: ["Invalid email format!"],
+    };
   }
 
-  // Lastname vis required
-  if (req.body.lastname === undefined || req.body.lastname === "") {
-    responseErrors.errors = {...responseErrors.errors, lastname: ["Lastname is required!"]}
-  }
-  // Lastname max length = 20
-  if (req.body.lastname !== undefined && req.body.lastname.length >= 20) {
-    responseErrors.errors = {...responseErrors.errors, lastname: ["Lastname should be less than length 20 chars!"]}
-  }
-
-  // Email (login) vis required
-  if (req.body.login === undefined || req.body.login === "") {
-    responseErrors.errors = {...responseErrors.errors, login: ["Email is required!"]}
-  }
-  if (req.body.login !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.login)) {
-    responseErrors.errors = {...responseErrors.errors, login: ["Invalid email format!"]}
-  }
-  // Email (login) min length = 5
-  if (req.body.login !== undefined && req.body.login.length < 5) {
-    responseErrors.errors = {...responseErrors.errors, login: ["Email should be more than length 5 chars!"]}
-  }
-  // Email (login) max length = 50
-  if (req.body.login !== undefined && req.body.login.length >= 50) {
-    responseErrors.errors = {...responseErrors.errors, login: ["Email should be less than length 50 chars!"]}
+  // Firstname (username) =====================
+  if (firstname === undefined || firstname === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      firstname: ["Firstname is required!"],
+    };
   }
 
-  // Password vis required
-  if (req.body.password === undefined || req.body.password === "") {
-    responseErrors.errors = {...responseErrors.errors, password: ["Password is required!"]}
-  }
-  // Password min length = 5
-  if (req.body.password !== undefined && req.body.password.length < 6) {
-    responseErrors.errors = {...responseErrors.errors, password: ["Password should be more than length 6 chars!"]}
-  }
-  // Password max length = 22
-  if (req.body.password !== undefined && req.body.password.length >= 20) {
-    responseErrors.errors = {...responseErrors.errors, password: ["Password should be less than length 20 chars!"]}
+  if (firstname !== undefined && firstname.length < 2) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      firstname: ["Firstname should be less than length 2 chars!"],
+    };
   }
 
-  if (Object.values(responseErrors.errors).some(errorArray => errorArray.length > 0)) {
+  if (firstname !== undefined && firstname.length > 20) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      firstname: ["Field username max length should be no more than 20"],
+    };
+  }
+
+  if (firstname !== undefined && !/^[a-zA-Zа-яА-ЯёЁіІїЇґҐ]+$/.test(firstname)) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      firstname: ["Username can only contain letters"],
+    };
+  }
+
+  if (firstname.trim() !== firstname) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      firstname: ["Username cannot have leading or trailing spaces"],
+    };
+  }
+
+  // Secondname =========================
+  if (secondname === undefined || secondname === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      secondname: ["Secondname is required!"],
+    };
+  }
+
+  if (secondname !== undefined && secondname.length < 2) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      secondname: ["Secondname should be less than length 2 chars!"],
+    };
+  }
+
+  if (secondname !== undefined && secondname.length > 20) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      secondname: ["Field secondname max length should be no more than 20"],
+    };
+  }
+
+  if (
+    secondname !== undefined &&
+    !/^[a-zA-Zа-яА-ЯёЁіІїЇґҐ]+$/.test(secondname)
+  ) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      secondname: ["Secondname can only contain letters"],
+    };
+  }
+
+  if (secondname.trim() !== secondname) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      secondname: ["Secondname cannot have leading or trailing spaces"],
+    };
+  }
+
+  // Lastname =========================
+  if (lastname === undefined || lastname === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      lastname: ["Lastname is required!"],
+    };
+  }
+
+  if (lastname !== undefined && lastname.length < 2) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      lastname: ["Lastname should be less than length 2 chars!"],
+    };
+  }
+
+  if (lastname !== undefined && lastname.length > 20) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      lastname: ["Field lastname max length should be no more than 20"],
+    };
+  }
+
+  if (lastname !== undefined && !/^[a-zA-Zа-яА-ЯёЁіІїЇґҐ]+$/.test(lastname)) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      lastname: ["Lastname can only contain letters"],
+    };
+  }
+
+  if (lastname.trim() !== lastname) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      lastname: ["lastname cannot have leading or trailing spaces"],
+    };
+  }
+
+  // Password ===============================
+  if (password === undefined || password === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Password is required!"],
+    };
+  }
+
+  if (password !== undefined && password.length < 6) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Password should be more than length 6 chars!"],
+    };
+  }
+
+  if (password !== undefined && password.length >= 20) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Password should be less than length 20 chars!"],
+    };
+  }
+
+  if (
+    Object.values(responseErrors.errors).some(
+      (errorArray) => errorArray.length > 0
+    )
+  ) {
     res.status(401).json(responseErrors);
     return;
   }
 
-  // End Validation
+  // =====   End Validation ===============
 
   try {
-    const { firstname, secondname, lastname, email, password } = req.body;
+    // const { firstname, secondname, lastname, email, password } = req.body;
 
     // Перевіряємо, чи існує користувач з такою електронною поштою
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
-      return res.status(400).json({ error: "User with this email already exists!" });
+      return res
+        .status(400)
+        .json({ error: "User with this email already exists!" });
     }
 
     // Хешуємо пароль
@@ -89,11 +186,11 @@ exports.createUser = async (req, res) => {
 
     // Створюємо нового користувача
     const newUser = await User.create({
+      email,
       firstname,
       secondname,
       lastname,
-      email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     res.status(201).json(newUser);
@@ -103,6 +200,58 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  const responseErrors = {
+    success: false,
+    errors: [],
+  };
+
+  console.log(req.body);
+
+  if (req.body.email === undefined || req.body.email === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      email: ["Field Email is required!"],
+    };
+  }
+
+  if (
+    req.body.email !== undefined &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.email)
+  ) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      email: ["Invalid email format!"],
+    };
+  }
+
+  if (req.body.password === undefined || req.body.password === "") {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Field Password is required!"],
+    };
+  }
+  if (req.body.password !== undefined && req.body.password.length < 6) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Field Email min length should be not less than 6"],
+    };
+  }
+  if (req.body.password !== undefined && req.body.password.length > 20) {
+    responseErrors.errors = {
+      ...responseErrors.errors,
+      password: ["Field Email should be not more than 20"],
+    };
+  }
+
+  if (
+    Object.values(responseErrors.errors).every(
+      (errorArray) => errorArray.length > 0
+    )
+  ) {
+    res.status(401).json(responseErrors);
+    return;
+  }
+
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
