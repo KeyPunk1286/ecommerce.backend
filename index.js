@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 
-app.use(cors({
-  origin: '*',
-  methods: ['*'],
-  credentials: true
-}));
-
+app.use(
+  cors({
+    origin: "*",
+    methods: ["*"],
+    credentials: true,
+  })
+);
 
 require("dotenv").config();
 
@@ -20,6 +21,7 @@ const usersModule = require("./modules/user.module");
 const customersModule = require("./modules/customer.module");
 const shopModule = require("./modules/shop.module");
 const productModule = require("./modules/product.module");
+const tables = require("./config/tables.js");
 
 const start = async () => {
   try {
@@ -41,6 +43,11 @@ const start = async () => {
 
     //==== product
     app.use("/product", productModule);
+
+    //==== tables
+    app.use("/tables", (req, res) => {
+      res.json(tables);
+    });
 
     app.listen(PORT, () => {
       console.log(`Server started on port: ${PORT}`);

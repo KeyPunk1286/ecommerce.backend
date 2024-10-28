@@ -21,8 +21,8 @@ exports.getAllCustomers = async (req, res) => {
 exports.getCustomersPaginated = async (req, res) => {
   try {
     let { page = 1, limit = 10 } = req.query;
-    page = parent(page);
-    limit = parent(limit);
+    page = parseInt(page);
+    limit = parseInt(limit);
     const offset = (page - 1) * limit;
     const totalCustomer = await Customer.count();
     const customers = await Customer.findAll({

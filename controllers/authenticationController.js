@@ -205,8 +205,6 @@ exports.loginUser = async (req, res) => {
     errors: [],
   };
 
-  console.log(req.body);
-
   if (req.body.email === undefined || req.body.email === "") {
     responseErrors.errors = {
       ...responseErrors.errors,
@@ -244,7 +242,7 @@ exports.loginUser = async (req, res) => {
   }
 
   if (
-    Object.values(responseErrors.errors).every(
+    Object.values(responseErrors.errors).some(
       (errorArray) => errorArray.length > 0
     )
   ) {
