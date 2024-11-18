@@ -1,9 +1,14 @@
 const Customer = require("../models/customer.model");
+const User = require("../models/user.model");
 
 exports.createCustomer = async (req, res) => {
   try {
-    const newCustomer = await Customer.create(req.body);
-    res.status(201).json(newCustomer);
+    const newCustomer = await Customer.create({
+      title: req.body.title,
+      user_id: req.body.user_id,
+      status: req.body.status,
+    });
+    return res.status(201).json(newCustomer);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -80,7 +85,9 @@ exports.updateCustomer = async (req, res) => {
       return;
     }
     await customer.update(req.body);
-    res.status(200).json(customer);
+    res
+      .status(200)
+      .json({ message: "Customer update successfully", customer: customer });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
