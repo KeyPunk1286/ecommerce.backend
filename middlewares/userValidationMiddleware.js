@@ -18,9 +18,9 @@ const isValidateNewUser = async (req, res, next, isUpdating = false) => {
     if (email === undefined || email === "") {
       addError("email", "Email is required!");
     }
-    if (email !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      addError("email", "Invalid email format!");
-    }
+    // if (email !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    //   addError("email", "Invalid email format!");
+    // }
 
     if (email && !isUpdating) {
       const existingUser = await Users.findOne({

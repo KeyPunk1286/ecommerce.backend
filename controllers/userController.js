@@ -1,8 +1,15 @@
 // const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
+const {isUserCreateNotValid} = require("../validationRules/userRules");
 
 exports.createUsers = async (req, res) => {
+
+  // --- Validation ---
+  const validation = isUserCreateNotValid(req, res);
+  if (validation) return validation;
+  // --- End Validation ---
+
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 7);
 
