@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const validateNewUser = require("../middlewares/userValidationMiddleware.js");
 
 //=== get all Users
 router.get("/all", userController.getAllUsers);
@@ -13,14 +12,10 @@ router.get("/", userController.getUsersPaginated);
 router.get("/:id", userController.getUserById);
 
 //=== created User
-// router.post("/", validateNewUser(false), userController.createUsers);
-router.post("/", (req, res, next) => {
-    next();
-}, userController.createUsers);
+router.post("/", userController.createUsers);
 
 //=== update  Users
-// router.put("/:id", validateNewUser(true), userController.updateUser);
-router.put("/:id", (req, res, next) => {next()}, userController.updateUser);
+router.put("/:id", userController.updateUser);
 
 //=== delete  Users
 router.delete("/:id", userController.deleteUser);

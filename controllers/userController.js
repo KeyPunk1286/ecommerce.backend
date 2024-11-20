@@ -1,13 +1,12 @@
 // const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
-const {isUserCreateNotValid} = require("../validationRules/userRules");
+const isValidateNewUser = require("../validationRules/userRules");
 
 exports.createUsers = async (req, res) => {
-
   // --- Validation ---
-  const validation = isUserCreateNotValid(req, res);
-  if (validation) return validation;
+  const validation = await isValidateNewUser(req, false);
+  if (validation) return res.status(400).json(validation);
   // --- End Validation ---
 
   try {
@@ -82,6 +81,11 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  // --- Validation ---
+  const validation = await isValidateNewUser(req, true);
+  if (validation) return res.status(400).json(validation);
+  // --- End Validation ---
+
   try {
     const userByid = await Users.findByPk(req.params.id);
     if (!userByid) {

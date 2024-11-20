@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const shopController = require("../controllers/shopController");
-const validateNewShop = require("../middlewares/shopValidationMiddleware");
 
 //=== all shop
 router.get("/all", shopController.getAllShop);
@@ -16,10 +15,10 @@ router.get("/:id", shopController.getShopById);
 router.get("/customer/:id", shopController.getShopByCustomerId);
 
 //=== create shop
-router.post("/", validateNewShop(false), shopController.createNewShop);
+router.post("/", shopController.createNewShop);
 
 //=== updare shop
-router.put("/:id", validateNewShop(true), shopController.updateShop);
+router.put("/:id", shopController.updateShop);
 
 //=== delete shop
 router.delete("/:id", shopController.deleteShop);

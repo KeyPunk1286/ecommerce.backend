@@ -1,7 +1,12 @@
 const Shop = require("../models/shop.model");
 const Customer = require("../models/customer.model");
+const isValidateShop = require("../validationRules/shopRules.js");
 
 exports.createNewShop = async (req, res) => {
+  // --- validation ---
+  const validation = await isValidateShop(req, false);
+  if (validation) return res.status(400).json(validation);
+  //--- end validation ---
   try {
     const newShop = await Shop.create({
       customer_id: req.body.customer_id,
@@ -97,7 +102,10 @@ exports.getShopByCustomerId = async (req, res) => {
 };
 
 exports.updateShop = async (req, res) => {
-  console.log(req.body.customer_id, req.body.title, req.body.is_active);
+  // --- validation ---
+  const validation = await isValidateShop(req, true);
+  if (validation) return res.status(400).json(validation);
+  //--- end validation ---
 
   try {
     const shop = await Shop.findByPk(req.params.id);
