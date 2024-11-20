@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const Customer = require("../models/customer.model");
 
-async function isValidateNewCustomer(req, res, next, isUpdating = false) {
+async function isValidateNewCustomer(req, isUpdating = false) {
   const responseErrors = {
     success: false,
     errors: {},
@@ -58,17 +58,7 @@ async function isValidateNewCustomer(req, res, next, isUpdating = false) {
   await isUserIdValid(req.body.user_id);
   isStatusValid(req.body.status);
 
-  if (Object.keys(responseErrors.errors).length > 0) {
-    res.status(400).json(responseErrors);
-    return;
-  } else {
-    next();
-  }
+  return Object.keys(responseErrors.errors).length > 0 ? responseErrors : null;
 }
 
-const validateNewCustomer =
-  (isUpdating = false) =>
-  async (req, res, next) =>
-    await isValidateNewCustomer(req, res, next, isUpdating);
-
-module.exports = validateNewCustomer;
+module.exports = isValidateNewCustomer;

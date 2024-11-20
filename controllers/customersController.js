@@ -1,7 +1,12 @@
 const Customer = require("../models/customer.model");
 const User = require("../models/user.model");
+const isValidationCustomer = require("../validationRules/customerRules.js");
 
 exports.createCustomer = async (req, res) => {
+  // --- validation ---
+  const validation = await isValidationCustomer(req, false);
+  if (validation) return res.status(400).json(validation);
+  // --- end validation ---
   try {
     const newCustomer = await Customer.create({
       title: req.body.title,
@@ -78,6 +83,10 @@ exports.getCustomerByUserId = async (req, res) => {
 };
 
 exports.updateCustomer = async (req, res) => {
+  // --- validation ---
+  const validation = await isValidationCustomer(req, false);
+  if (validation) return res.status(400).json(validation);
+  // --- end validation ---
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) {
