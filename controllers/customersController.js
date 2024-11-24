@@ -84,7 +84,7 @@ exports.getCustomerByUserId = async (req, res) => {
 
 exports.updateCustomer = async (req, res) => {
   // --- validation ---
-  const validation = await isValidationCustomer(req, false);
+  const validation = await isValidationCustomer(req, true);
   if (validation) return res.status(400).json(validation);
   // --- end validation ---
   try {
