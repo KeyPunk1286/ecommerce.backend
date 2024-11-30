@@ -1,20 +1,14 @@
 const Product = require("../models/product.model");
 const Shop = require("../models/shop.model");
+const isValidationNewProduct = require("../validationRules/productRules.js");
 
 exports.createNewProduct = async (req, res) => {
+  //--- validation ---
+  const validation = await isValidationNewProduct(req);
+  if (validation) return res.status(400).json(validation);
+  //--- validation ---
+
   try {
-    const { shop_id, title, description, price } = req.body;
-    if (!shop_id || !title || !description || !price) {
-      res.status(400).json({
-        message: "Shop ID, title, description, and price are required",
-      });
-      return;
-    }
-    const shop = await Shop.findByPk(shop_id);
-    if (!shop) {
-      res.status(404).json({ message: "Shop not found" });
-      return;
-    }
     const newProduct = await Product.create(req.body);
     res.status(201).json(newProduct);
   } catch (error) {
@@ -87,20 +81,23 @@ exports.getProductByShopId = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
+  console.log(req.body);
+
+  //--- validation ---
+  const validation = await isValidationNewProduct(req);
+  if (validation) return res.status(400).json(validation);
+  //--- validation ---
+  console.log("back_ok");
+
   try {
-    const productId = req.params.id;
-    console.log("Шукаю помилку!!!!", productId);
-    if (!productId) {
-      res.status(400).json({ message: "Shop ID is required" });
-      return;
+    const productById = await Product.findByPk(req.params.id);
+    if (!productById) {
+      res.status(400).json({ message: "Product not found" });
     }
-    const productUpdate = await Product.findByPk(productId);
-    if (!productUpdate) {
-      res.status(404).json({ message: "Product not found" });
-      return;
-    }
-    await productUpdate.update(req.body);
-    res.status(200).json(productUpdate);
+    await productById.update(req.body);
+    res
+      .status(200)
+      .json({ message: "Shop update successfully", product: Product });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
