@@ -109,6 +109,7 @@ exports.updateShop = async (req, res) => {
 
   try {
     const shop = await Shop.findByPk(req.params.id);
+
     if (!shop) {
       res.status(400).json({ message: "Shop not found" });
     }
