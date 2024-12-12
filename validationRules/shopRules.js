@@ -14,10 +14,10 @@ async function isValidateNewShop(req, isUpdating = false) {
 
   async function isCustomerIdValid(customerId) {
     if (customerId === undefined || customerId === "") {
-      addError("customer_id", "Customer_id is required!");
+      addError("customer_id", "Field customer_id is required!");
     }
     if (customerId !== undefined && !/^\d+$/.test(customerId)) {
-      addError("customer_id", "The field customer_id must be an integer.");
+      addError("customer_id", "The field value must be an integer.");
     }
     if (customerId) {
       const findCustomerId = await Customer.findByPk(customerId);
@@ -28,13 +28,16 @@ async function isValidateNewShop(req, isUpdating = false) {
   }
   async function isTitleValid(title) {
     if (title === undefined || title === "") {
-      addError("title", "Title is required!");
+      addError("title", "Field title shop is required");
     }
     if (title !== undefined && title.length > 20) {
-      addError("title", "Field title max length should be no more than 20");
+      addError(
+        "title",
+        "Field title shop max length should be no more than 20"
+      );
     }
     if (title && title.trim() !== title) {
-      addError("title", "Field title should not start or end with spaces");
+      addError("title", "Field title shop should not start or end with spaces");
     }
     if (title && !isUpdating) {
       const findTitleShop = await Shop.findOne({ where: { title: title } });
