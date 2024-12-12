@@ -16,7 +16,7 @@ const isValidateNewUser = async (req, isUpdating = false) => {
   // валідація email ==================================================
   async function isEmailValid(email) {
     if (email === undefined || email === "") {
-      addError("email", "Email is required!");
+      addError("email", "Field Email is required!");
     }
     if (email !== undefined && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       addError("email", "Invalid email format!");
@@ -93,9 +93,9 @@ const isValidateNewUser = async (req, isUpdating = false) => {
   }
 
   await isEmailValid(req.body.email);
-  isTextFieldValid("firstname", req.body.firstname, "Firstname");
-  isTextFieldValid("secondname", req.body.secondname, "Secondname");
-  isTextFieldValid("lastname", req.body.lastname, "Lastname");
+  isTextFieldValid("firstname", req.body.firstname, "First name");
+  isTextFieldValid("secondname", req.body.secondname, "Second name");
+  isTextFieldValid("lastname", req.body.lastname, "Last name");
   if (!isUpdating) {
     isPasswordValid(req.body.password);
   }
