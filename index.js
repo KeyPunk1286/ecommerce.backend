@@ -22,6 +22,7 @@ const customersModule = require("./modules/customer.module");
 const shopModule = require("./modules/shop.module");
 const productModule = require("./modules/product.module");
 const tables = require("./config/tables.js");
+const emailService = require("./controllers/emailServiceController.js");
 
 const start = async () => {
   try {
@@ -48,6 +49,9 @@ const start = async () => {
     app.use("/tables", (req, res) => {
       res.json(tables);
     });
+
+    //==== service
+    app.post("/send-email", emailService.sendEmail);
 
     app.listen(PORT, () => {
       console.log(`Server started on port: ${PORT}`);
