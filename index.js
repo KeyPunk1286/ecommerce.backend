@@ -18,6 +18,7 @@ const PORT = process.env.APP_PORT || 7777;
 
 const authModule = require("./modules/auth.module");
 const usersModule = require("./modules/user.module");
+const galleryModule = require("./modules/gallery.module");
 const customersModule = require("./modules/customer.module");
 const shopModule = require("./modules/shop.module");
 const productModule = require("./modules/product.module");
@@ -49,6 +50,9 @@ const start = async () => {
     app.use("/tables", (req, res) => {
       res.json(tables);
     });
+
+    //==== gallery
+    app.use("/gallery", galleryModule);
 
     //==== service
     app.post("/send-email", emailService.sendEmail);

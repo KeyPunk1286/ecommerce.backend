@@ -10,16 +10,16 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      product_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: "products",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
+      // product_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: true,
+      //   references: {
+      //     model: "products",
+      //     key: "id",
+      //   },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      // },
       url: {
         type: Sequelize.STRING,
         allowNull: false,
